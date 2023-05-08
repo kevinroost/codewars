@@ -70,7 +70,11 @@ function isValidWalk(walk: string[]):boolean {
   return false
 }
 
-console.log(isValidWalk(['n','s','n','s','n','s','n','s','s','s']));
+const numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
 
-
-
+function createPhoneNumber(numbers: number[]): string {
+  let firstThree: string = numbers.slice(0,3).join('')
+  let secondThree: string = numbers.slice(3,6).join('')
+  let lastFour: string = numbers.slice(6).join('')
+  return `(${firstThree}) ${secondThree}-${lastFour}`
+}

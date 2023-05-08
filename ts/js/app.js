@@ -60,4 +60,10 @@ function isValidWalk(walk) {
         return true;
     return false;
 }
-console.log(isValidWalk(['n', 's', 'n', 's', 'n', 's', 'n', 's', 's', 's']));
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+function createPhoneNumber(numbers) {
+    let firstThree = numbers.slice(0, 3).join('');
+    let secondThree = numbers.slice(3, 6).join('');
+    let lastFour = numbers.slice(6).join('');
+    return `(${firstThree}) ${secondThree}-${lastFour}`;
+}
