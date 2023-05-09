@@ -78,3 +78,30 @@ function createPhoneNumber(numbers: number[]): string {
   let lastFour: string = numbers.slice(6).join('')
   return `(${firstThree}) ${secondThree}-${lastFour}`
 }
+
+const josephus = <T>(items: T[], k: number): T[] => {
+  const result: T[] = []
+  let targetIndex:number = k - 1
+
+  function counter() {
+
+    for (let i = 1; i < k; i++) {
+      if (targetIndex === items.length-1) {
+        targetIndex = 0
+      } else if (targetIndex >= items.length) {
+        targetIndex = 1
+      } else targetIndex++
+    }
+  }
+
+  while (items.length > 1) {
+    result.push(...items.splice(targetIndex,1))
+    counter()
+  }
+
+  result.push(...items.splice(0,1))
+
+  return result;
+};
+
+console.log(josephus([1,2,3,4,5,6,7,8,9,10],2));
