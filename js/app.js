@@ -64,15 +64,127 @@ class User {
 
 }
 
-const user = new User()
+function validateBattlefield(field) {
+  let count = 0
+  let battleship = 0
+  let cruiser = 0
+  let destroyer = 0
+  let submarine = 0
 
-console.log(user);
-user.rankIndex = 15
+  const checkTally = ()=> {
+    if (
+      (battleship !== 1) ||
+      (cruiser !== 2) ||
+      (destroyer !== 3) ||
+      (submarine !== 4)
+    ) {return false} else return true
+  }
 
-console.log(user.rankIndex);
-console.log(user.rank);
-user.incProgress(8)
-user.incProgress(8)
-user.incProgress(8)
+  const submitCount = () => {
+    if (count === 4) {battleship++}
+    if (count === 3) {cruiser++}
+    if (count === 2) {destroyer++}
+    if (count === 1) {submarine++}
+    count = 0
+  }
 
-console.log(user);
+  function tallySquareHorizontal(i, k) {
+    field[i][k+count] = -1
+    count++
+    if (field[i][k + count] === 1) {
+      tallySquareHorizontal(i, k)
+    } else {
+      submitCount()
+    }
+  }
+
+  function tallySquareVertical(i, k) {
+    field[i+count][k] = -1
+    count++
+    if (field[i+count][k] === 1) {
+      tallySquareVertical(i, k)
+    } else {
+      submitCount()
+    }
+  }
+
+  for (let i = 1; i < 9; i++) {
+
+    for (let k = 1; k < 9; k++){
+      
+      let contactShips = 0
+
+      if (
+        (field[i][k] === 1)
+      ) {
+        if (field[i+1] && field[i + 1][k] === 1) contactShips++
+        if (field[i+1] && field[i + 1][k + 1] === 1) contactShips++
+        if (field[i+1] && field[i + 1][k - 1] === 1) contactShips++
+        if (field[i][k + 1] === 1) contactShips++
+      }
+
+      if (contactShips > 1) return false
+
+      if (
+        field[i][k] === 1 &&
+        field[i+1][k] !== 1 &&
+        field[i-1][k] !== 1
+      ) {
+        tallySquareHorizontal(i, k)
+      } else if (
+      field[i][k] === 1 &&
+      field[i][k+1] !== 1 &&
+      field[i][k-1] !== 1
+      ) {
+        tallySquareVertical(i, k)
+      }
+
+    }
+  }
+
+  for (let k = 0; k < 10; k++){
+    if (
+      field[0][k] === 1 &&
+      field[1][k] !== 1
+    ) {
+      tallySquareHorizontal(0, k)
+    }
+    if (
+      field[9][k] === 1 &&
+      field[8][k] !== 1
+    ) {
+      tallySquareHorizontal(9, k)
+    }
+  }
+
+  for (let i = 0; i < 8; i++) {
+    if (
+      field[i][0] === 1 &&
+      field[i][1] !== 1
+    ) {
+      tallySquareVertical(i, 0)
+    }
+    if (
+      field[i][9] === 1 &&
+      field[i][8] !== 1
+    ) {
+      tallySquareVertical(i, 9)
+    }
+  }
+  return checkTally()
+}
+
+console.log(validateBattlefield(
+  [
+    [1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+    [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+    [1, 0, 1, 0, 1, 1, 1, 0, 1, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+]
+));
