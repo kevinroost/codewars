@@ -174,17 +174,51 @@ function validateBattlefield(field) {
   return checkTally()
 }
 
-console.log(validateBattlefield(
-  [
-    [1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
-    [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
-    [1, 0, 1, 0, 1, 1, 1, 0, 1, 0],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-]
-));
+function isInteresting(number, awesomePhrases) {
+
+  function allZeros(array) {
+    if (array.slice(1).every(x => x === 0)) {
+      console.log(array.slice(1, -1));
+      return true
+    } else return false
+  }
+
+  function sameDigit(array) {
+    return array.every(x => x === array[0])
+  }
+
+  function isIncrementing(array) {
+    if (array.slice(0, -1).includes(0)) return false
+
+    if ((array.slice(-2)[0] === 9) && (array.slice(-1)[0] === 0)) {
+      return array.slice(0, -2).every(x => x === array[(array.indexOf(x))+1] - 1)
+    }
+
+    return array.slice(0, -1).every(x => x === array[(array.indexOf(x))+1] - 1)
+  }
+  
+  function isDecrementing(array) {
+    return array.slice(0, -1).every(x => x === array[(array.indexOf(x))+1] + 1)
+  }
+
+  function isPalindrome(array) {
+    for (let i = 0; i <= Math.floor(array.length/2); i++) {
+      if (array[i] !== array[array.length - i - 1]) return false
+    }
+    return true
+  }
+  function qualifies(num) {
+    let numArr = num.toString().split('').map(x => parseInt(x))
+    if (numArr.length < 3) return false
+    if (awesomePhrases.includes(num) || allZeros(numArr) || sameDigit(numArr) || isIncrementing(numArr) || isDecrementing(numArr) || isPalindrome(numArr)) {
+      return true
+    } else return false
+  }
+
+  if (qualifies(number)) {
+    return 2
+  } else if (qualifies(number+1) || qualifies(number+2)) {
+    return 1
+  } else return 0
+
+}
