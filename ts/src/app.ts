@@ -104,4 +104,47 @@ const josephus = <T>(items: T[], k: number): T[] => {
   return result;
 };
 
-console.log(josephus([1,2,3,4,5,6,7,8,9,10],2));
+function findEvenIndex(arr: number[]): number{
+  let n = -1
+  for (let i = 0; i < arr.length; i++) {
+    const leftSum = arr.slice(0, i).reduce((prev, next) => prev + next, 0)
+    const rightSum = arr.slice(i+1).reduce((prev, next) => prev + next, 0)
+    
+    if (leftSum === rightSum) {
+        n=i
+        break
+      }
+  }
+  return n
+}
+
+
+function josephusSurvivor(n: number, k: number): number {
+
+  const items: number[] = []
+
+  for (let i = 1; i <= n; i++) {
+    items.push(i)
+  }
+
+  let targetIndex:number = k - 1
+
+  function counter() {
+
+    for (let i = 1; i < k; i++) {
+      if (targetIndex === items.length-1) {
+        targetIndex = 0
+      } else if (targetIndex >= items.length) {
+        targetIndex = 1
+      } else targetIndex++
+    }
+  }
+
+  while (items.length > 1) {
+    items.splice(targetIndex,1)
+    counter()
+  }
+
+  return items[0];
+};
+
