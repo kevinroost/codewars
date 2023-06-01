@@ -148,3 +148,54 @@ function josephusSurvivor(n: number, k: number): number {
   return items[0];
 };
 
+
+class Vector {
+  arrayA: number[]
+  constructor(a: number[]) {
+    this.arrayA = a
+  }
+  compare(arrayB: Vector) {
+    if (this.arrayA.length !== arrayB.arrayA.length) throw new Error('Vectors are not of equal length')
+  }
+  equals(arrayB: Vector) {
+    // this.compare(arrayB)
+    for (let i = 0; i < this.arrayA.length; i++) {
+      if (this.arrayA[i] !== arrayB.arrayA[i]) return false
+    }
+    return true
+  }
+  add(arrayB: Vector): Vector {
+    this.compare(arrayB)
+    let result: number[] = []
+    for (let i = 0; i < this.arrayA.length; i++) {
+      result.push(this.arrayA[i] + arrayB.arrayA[i])
+    }
+    return new Vector(result)
+  }
+  subtract(arrayB: Vector): Vector {
+    this.compare(arrayB)
+    let result: number[] = []
+    for (let i = 0; i < this.arrayA.length; i++) {
+      result.push(this.arrayA[i] - arrayB.arrayA[i])
+    }
+    return new Vector(result)
+  }
+  dot(arrayB: Vector): number {
+    this.compare(arrayB)
+    let result: number = 0
+    for (let i = 0; i < this.arrayA.length; i++) {
+      result += (this.arrayA[i] * arrayB.arrayA[i])
+    }
+    return result
+  }
+  norm(): number {
+    let result: number = 0
+    for (let i = 0; i < this.arrayA.length; i++) {
+      result += (this.arrayA[i] ** 2)
+    }
+    return Math.sqrt(result)
+  }
+  toString(): string {
+    return `(${this.arrayA.join(',')})`
+  }
+}

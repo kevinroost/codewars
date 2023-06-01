@@ -126,3 +126,54 @@ function josephusSurvivor(n, k) {
     return items[0];
 }
 ;
+class Vector {
+    constructor(a) {
+        this.arrayA = a;
+    }
+    compare(arrayB) {
+        if (this.arrayA.length !== arrayB.arrayA.length)
+            throw new Error('Vectors are not of equal length');
+    }
+    equals(arrayB) {
+        // this.compare(arrayB)
+        for (let i = 0; i < this.arrayA.length; i++) {
+            if (this.arrayA[i] !== arrayB.arrayA[i])
+                return false;
+        }
+        return true;
+    }
+    add(arrayB) {
+        this.compare(arrayB);
+        let result = [];
+        for (let i = 0; i < this.arrayA.length; i++) {
+            result.push(this.arrayA[i] + arrayB.arrayA[i]);
+        }
+        return new Vector(result);
+    }
+    subtract(arrayB) {
+        this.compare(arrayB);
+        let result = [];
+        for (let i = 0; i < this.arrayA.length; i++) {
+            result.push(this.arrayA[i] - arrayB.arrayA[i]);
+        }
+        return new Vector(result);
+    }
+    dot(arrayB) {
+        this.compare(arrayB);
+        let result = 0;
+        for (let i = 0; i < this.arrayA.length; i++) {
+            result += (this.arrayA[i] * arrayB.arrayA[i]);
+        }
+        return result;
+    }
+    norm() {
+        let result = 0;
+        for (let i = 0; i < this.arrayA.length; i++) {
+            result += (this.arrayA[i] ** 2);
+        }
+        return Math.sqrt(result);
+    }
+    toString() {
+        return `(${this.arrayA.join(',')})`;
+    }
+}
